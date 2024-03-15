@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.column {
+  flex: 1;
+  margin: 0 10px;
+}
+
+.gradeInfo {
+  display: flex;
+}
+
+.rubric, .grade {
+  margin-right: 20px;
+}
+
+.assignmentView {
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.comments {
+  margin-top: 20px;
+}
