@@ -1,0 +1,25 @@
+.reviewContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.column {
+  flex: 1;
+  margin: 0 10px;
+}
+
+.rubric h3 {
+  margin-bottom: 5px;
+}
+
+.rubric input {
+  width: 50px;
+}
+
+.comments textarea {
+  width: 100%;
+  height: 100px;
+  resize: vertical;
+  margin-bottom: 10px;
+}
