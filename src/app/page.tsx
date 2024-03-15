@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import styles from './page.module.css';
+import Link from 'next/link';
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -20,6 +21,12 @@ export default function Login() {
     // Here you can implement your login logic, for demonstration purpose, let's just log the credentials
     console.log('Username:', username);
     console.log('Password:', password);
+
+    if (username === "Instructor") {
+      location.href="/instructor/assignments"
+    } else if (username === "Student") {
+      location.href="/student/assignments"
+    }
   };
 
   return (
