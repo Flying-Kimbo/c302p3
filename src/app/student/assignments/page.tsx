@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react';
 import styles from './page.module.css';
 
@@ -8,7 +10,7 @@ const coursesData = [
 ];
 
 const assignmentsData = [
-  { id: 1, courseId: 1, name: 'Assignment 1', dueDate: 'March 20, 2024', submitted: true, weight: '20%' },
+  { id: 1, courseId: 1, name: 'Assignment 1', dueDate: 'March 20, 2024', submitted: true,  weight: '20%' },
   { id: 2, courseId: 1, name: 'Assignment 2', dueDate: 'March 25, 2024', submitted: false, weight: '30%' },
   { id: 3, courseId: 2, name: 'Assignment 1', dueDate: 'March 20, 2024', submitted: false, weight: '25%' },
   { id: 4, courseId: 2, name: 'Assignment 2', dueDate: 'March 25, 2024', submitted: false, weight: '25%' },
@@ -17,6 +19,14 @@ const assignmentsData = [
 ];
 
 const StudentAssignments = () => {
+  function handleClick(submitted) {
+    if (submitted) {
+      location.href='/student/review'
+    } else {
+      location.href='/student/submission'
+    }
+  }
+
   return (
     <div className={styles['student-assignments']}>
       {coursesData.map((course) => (
@@ -32,7 +42,9 @@ const StudentAssignments = () => {
                   <h3 className={styles['assignment-title']}>{assignment.name}</h3>
                   <p>Due Date: {assignment.dueDate}</p>
                   <p>Weight: {assignment.weight}</p>
-                  <button className={`${styles['assignment-button']} ${assignment.submitted ? styles['assignment-submitted'] : styles['assignment-not-submitted']}`}>
+                  <button
+                    onClick={() => handleClick(assignment.submitted)}
+                    className={`${styles['assignment-button']} ${assignment.submitted ? styles['assignment-submitted'] : styles['assignment-not-submitted']}`}>
                     {assignment.submitted ? 'Submitted' : 'Not Submitted'}
                   </button>
                 </div>
