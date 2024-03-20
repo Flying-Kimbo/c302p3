@@ -116,7 +116,9 @@ const StudentAssignments = () => {
                   <div className={`${styles['bubble']} ${getBubbleClass(assignment.state, 2)}`}></div>
                   </div>
                   </div>
-                  <button className={`${styles['assignment-button']} ${getButtonClass(assignment.state)}`} onClick={() => handleClick(assignment.state)}>
+                  <button className={`${styles['assignment-button']} ${getButtonClass(assignment.state)}`}
+                          onClick={() => handleClick(assignment.state)}
+                  >
                     {getButtonText(assignment.state)}
                   </button>
                 </div>

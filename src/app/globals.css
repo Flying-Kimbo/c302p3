@@ -24,20 +24,13 @@
 
   --tile-start-rgb: 239, 245, 249;
   --tile-end-rgb: 228, 232, 233;
-  --tile-border: conic-gradient(
-    #00000080,
-    #00000040,
-    #00000030,
-    #00000020,
-    #00000010,
-    #00000010,
-    #00000080
-  );
+  --tile-border: #00000080;
 
   --callout-rgb: 238, 240, 241;
   --callout-border-rgb: 172, 175, 176;
   --card-rgb: 180, 185, 188;
   --card-border-rgb: 131, 134, 135;
+  --card-callout: rgb(200,223,196);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -56,20 +49,15 @@
 
     --tile-start-rgb: 2, 13, 46;
     --tile-end-rgb: 2, 5, 19;
-    --tile-border: conic-gradient(
-      #ffffff80,
-      #ffffff40,
-      #ffffff30,
-      #ffffff20,
-      #ffffff10,
-      #ffffff10,
-      #ffffff80
-    );
+    --tile-border: #3e4446;
 
     --callout-rgb: 20, 20, 20;
     --callout-border-rgb: 108, 108, 108;
     --card-rgb: 100, 100, 100;
     --card-border-rgb: 200, 200, 200;
+    --card-callout: #312876;
+
+    --text-colour: #e8e6e3;
   }
 }
 
@@ -150,6 +138,6 @@ input[type="checkbox"] {
 
 @media (prefers-color-scheme: dark) {
   html {
-    color-scheme: light;
+    color-scheme: dark;
   }
 }

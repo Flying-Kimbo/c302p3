@@ -10,7 +10,7 @@
 
 .course-info {
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  background-color: rgb(200,223,196);
+  background-color: var(--card-callout);
   padding: 20px;
 }
 
@@ -18,12 +18,12 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   grid-gap: 20px;
-  background-color: #fff;
+  background-color: var(--background-color);
   padding: 20px;
 }
 
 .assignment {
-  border: 1px solid #ccc;
+  border: 1px solid var(--tile-border);
   border-radius: 5px;
   padding: 10px;
   position: relative; /* Added for positioning bubbles */
@@ -42,12 +42,12 @@
 
 .assignment-submitted {
   background-color: #32cd32;
-  color: #fff;
+  color: var(--text-colour);
 }
 
 .assignment-not-submitted {
   background-color: #ff0000;
-  color: #fff;
+  color: var(--text-colour);
 }
 
 .assignment-button:hover {
