@@ -1,64 +1,133 @@
 'use client'
 
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './page.module.css';
 
-const InstructorAssignments = () => {
-  // Dummy assignments data
-  const [assignments, setAssignments] = useState([
-    { id: 1, name: 'Assignment 1', dueDate: '2024-03-20', marked: true },
-    { id: 2, name: 'Assignment 2', dueDate: '2024-03-25', marked: false },
-    { id: 3, name: 'Assignment 3', dueDate: '2024-04-01', marked: true },
-    // Add more assignments as needed
-  ]);
+interface Assignment {
+  id: number;
+  courseId: number;
+  name: string;
+  dueDate: string;
+  weight: string;
+  state: string;
+  grade: string; // New field for storing the grade
+}
 
-  const handleReview = (assignmentId) => {
-    // Handle review functionality here
-    console.log(`Reviewing assignment with ID: ${assignmentId}`);
-  };
+interface Course {
+  id: number;
+  name: string;
+}
 
-  const handlePublishMarks = (assignmentId) => {
-    // Handle publish marks functionality here
-    console.log(`Publishing marks for assignment with ID: ${assignmentId}`);
-  };
+function handleClick(state) {
+  if (state == 'not-submitted') {
+    location.href='/student/submission';
+  } else if (state == 'submitted') {
+    location.href='/student/submission'; //FIXME this should point to a 'modify submission' page
+  } else if (state == 'graded') {
+    location.href='/student/review';
+  }
+}
 
-  const handleNewAssignment = () => {
-    // Handle creation of a new assignment functionality here
-    console.log('Creating a new assignment');
-  };
+const coursesData: Course[] = [
+  { id: 1, name: 'Mathematics' },
+  { id: 2, name: 'English' },
+  // Add more courses as needed
+];
 
+const assignmentsData: Assignment[] = [
+  { id: 1, courseId: 1, name: 'Assignment 1', dueDate: 'March 20, 2024', weight: '20%', state: 'not-submitted', grade: 'Grading Incomplete' },
+  { id: 2, courseId: 1, name: 'Assignment 2', dueDate: 'March 25, 2024', weight: '30%', state: 'submitted', grade: 'B+' },
+  { id: 3, courseId: 2, name: 'Assignment 1', dueDate: 'March 20, 2024', weight: '25%', state: 'graded', grade: 'A' },
+  { id: 4, courseId: 2, name: 'Assignment 2', dueDate: 'March 25, 2024', weight: '25%', state: 'not-submitted', grade: 'Grading Incomplete' },
+  // Add more assignments as needed
+];
+
+const getBubbleClass = (state: string, index: number) => {
+  switch (state) {
+    case 'not-submitted':
+      return index === 0 ? styles['bubble-full'] : styles['bubble-empty'];
+    case 'submitted':
+      return index <= 1 ? styles['bubble-full'] : styles['bubble-empty'];
+    case 'graded':
+      return styles['bubble-full'];
+    default:
+      return '';
+  }
+};
+
+const getButtonClass = (state: string) => {
+  switch (state) {
+    case 'not-submitted':
+      return styles['assignment-submit'];
+    case 'submitted':
+      return styles['assignment-edit'];
+    case 'graded':
+      return styles['assignment-review'];
+    default:
+      return '';
+  }
+};
+
+const getButtonText = (state: string) => {
+  switch (state) {
+    case 'not-submitted':
+      return 'Submit';
+    case 'submitted':
+      return 'Edit';
+    case 'graded':
+      return 'Review';
+    default:
+      return '';
+  }
+};
+
+const StudentAssignments = () => {
   return (
-    <div>
-      <h1>Instructor Assignments</h1>
-      <div className={styles.buttons}>
-        <button onClick={handleNewAssignment}>Create New Assignment</button>
-      </div>
-      <div className={styles.assignmentsContainer}>
-        {assignments.map((assignment) => (
-          <div key={assignment.id} className={styles.assignmentTile}>
-            <h3>{assignment.name}</h3>
-            <p>Due Date: {assignment.dueDate}</p>
-            <div className={styles.actions}>
-              <button onClick={() => handleReview(assignment.id)}>Review</button>
-              {assignment.marked ? (
-                <button onClick={() => handlePublishMarks(assignment.id)}>Publish Marks</button>
-              ) : (
-                <div className={styles.dropdown}>
-                  <button className={styles.dropbtn}>Review Students</button>
-                  <div className={styles.dropdownContent}>
-                    <p>Students Marked: Yes</p>
-                    {/* Placeholder for list of students */}
-                    <p>Students Not Marked: No</p>
-                    {/* Placeholder for list of students */}
-                  </div>
-                </div>
-              )}
-            </div>
+    <div className={styles['student-assignments']}>
+      {coursesData.map((course) => (
+        <div key={course.id} className={styles['course-container']}>
+          <div className={styles['course-info']}>
+            <h2>{course.name}</h2>
           </div>
-        ))}
-      </div>
+          <div className={styles['assignment-list']}>
+            {assignmentsData
+              .filter((assignment) => assignment.courseId === course.id)
+              .map((assignment) => (
+                <div key={assignment.id} className={styles.assignment}>
+                  <h3 className={styles['assignment-title']}>{assignment.name}</h3>
+                  <p>Due Date: {assignment.dueDate}</p>
+                  <div>
+                  <span><b>Weight</b>: {assignment.weight}</span>
+                  </div>
+                  <div>
+                  <span><b>Grade</b>: {assignment.state === 'graded' ? assignment.grade : 'Grading Incomplete'}</span>
+                  </div>
+                  <div className={styles['progress-indicator']}>
+                  <div className={styles['key-value-pair']}>
+                  <span className={styles['bubble-text']}>Open</span>
+                  <div className={`${styles['bubble']} ${getBubbleClass(assignment.state, 0)}`}></div>
+                  </div>
+                  <div className={styles['key-value-pair']}>
+                  <span className={styles['bubble-text']}>Submitted</span>
+                  <div className={`${styles['bubble']} ${getBubbleClass(assignment.state, 1)}`}></div>
+                  </div>
+                  <div className={styles['key-value-pair']}>
+                  <span className={styles['bubble-text']}>Graded</span>
+                  <div className={`${styles['bubble']} ${getBubbleClass(assignment.state, 2)}`}></div>
+                  </div>
+                  </div>
+                  <button className={`${styles['assignment-button']} ${getButtonClass(assignment.state)}`}
+                          onClick={() => handleClick(assignment.state)}
+                  >
+                    {getButtonText(assignment.state)}
+                  </button>
+                </div>
+              ))}
+          </div>
+        </div>
+      ))}
     </div>
   );
 };
 
-export default InstructorAssignments;
+export default StudentAssignments;
