@@ -31,7 +31,7 @@ export default function Login() {
 
   return (
     <div className={styles.container}>
-      <form onSubmit={handleSubmit} className={styles['login-form']}>
+      <form onSubmit={handleSubmit} className={[styles['login-form'], "card"].join(" ")}>
         <h1>Login</h1>
         <div className={styles['form-group']}>
           <label htmlFor="username">Username</label>
