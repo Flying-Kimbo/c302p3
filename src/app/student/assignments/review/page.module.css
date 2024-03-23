@@ -1,6 +1,16 @@
+.main-layout {
+  display: grid;
+  grid-template-rows: 1fr 111px;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: auto;
+}
+
 .review-page {
   display: flex;
-  height: 100vh;
+  height: 100%;
+  max-height: 100%;
+  overflow: auto;
 }
 
 /* Assuming --card-callout is defined */
@@ -18,15 +28,10 @@
 
 .grade-summary-button {
   background-color: #4CAF50;
-  border: none;
-  color: white;
   padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
   display: inline-block;
   font-size: 16px;
   margin-bottom: 10px;
-  cursor: pointer;
 }
 
 .grade-summary-table {
@@ -36,13 +41,13 @@
 
 .grade-summary-table th,
 .grade-summary-table td {
-  border: 1px solid #ddd;
+  border: 1px solid var(--card-border-color);
   padding: 8px;
   text-align: left;
 }
 
 .grade-summary-table th {
-  background-color: #f2f2f2;
+  background-color: var(--card-color);
 }
 
 .grade-summary-total {

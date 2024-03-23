@@ -31,35 +31,35 @@ const StudentGradeSummary = (_rubricData, _studentMarksData) => {
   };
 
   return (
-      <div className={styles['left-column-content']}>
-        <button className={styles['grade-summary-button']} onClick={handleShowRubric}>
-          Show Rubric
-        </button>
-        <table className={styles['grade-summary-table']}>
-          <thead>
-            <tr>
-              <th>Category</th>
-              <th>Grade</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rubricData.map(({ category, max_marks }, index) => {
-              const studentMarks = studentMarksData[index]?.student_marks || 0;
-              const gradeFraction = `${studentMarks}/${max_marks}`;
-              return (
-                <tr key={category}>
-                  <td>{category}</td>
-                  <td>{gradeFraction}</td>
-                </tr>
-              );
-            })}
-            <tr className={styles['grade-summary-total']}>
-              <td>Total</td>
-              <td>{`${totalStudentMarks}/${totalMarks}`}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div className={styles['left-column-content']}>
+      <button className={styles['grade-summary-button']} onClick={handleShowRubric}>
+        Show Rubric
+      </button>
+      <table className={styles['grade-summary-table']}>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Grade</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rubricData.map(({ category, max_marks }, index) => {
+            const studentMarks = studentMarksData[index]?.student_marks || 0;
+            const gradeFraction = `${studentMarks}/${max_marks}`;
+            return (
+              <tr key={category}>
+                <td>{category}</td>
+                <td>{gradeFraction}</td>
+              </tr>
+            );
+          })}
+          <tr className={styles['grade-summary-total']}>
+            <td>Total</td>
+            <td>{`${totalStudentMarks}/${totalMarks}`}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   );
 };
 
@@ -91,53 +91,54 @@ const StudentReviewPage = () => {
   const { rubric, comments } = data;
 
   // Text content of the assignment
-  const assignmentContent = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+  let assignmentContent = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+  // assignmentContent = assignmentContent.repeat(10); // uncomment to extend lorem ipsum to test scrolling
 
   // Render comments with highlighted text
   return (
-    <div>
-    <div className={styles['review-page']}>
-      <div className={styles['left-column']}>
-        <h2>English</h2>
-        <div className={`${styles['assignment-details']}`}> {/* Apply left-column-content style here */}
-          <h3>Rubric Details</h3>
+    <div className={styles['main-layout']}>
+      <div className={styles['review-page']}>
+        <div className={styles['left-column']}>
+          <h2>English</h2>
+          <div className={`${styles['assignment-details']}`}> {/* Apply left-column-content style here */}
+            <h3>Rubric Details</h3>
+          </div>
+          <div className={`${styles['assignment-details-widget']}`}>
+            {StudentGradeSummary('', '')}
+          </div>
         </div>
-        <div className={`${styles['assignment-details-widget']}`}>
-          {StudentGradeSummary('', '')}
+        <div className={styles['center-column']}>
+          <div className={styles['assignment-header']}>
+            <h1>Assignment Name</h1>
+          </div>
+          <div className={styles['ipsum-content']}>
+            <h2>Assignment Content</h2>
+            {/* Split the assignment content and wrap sections corresponding to comments with spans */}
+            {comments.map((comment: { position: { start: number; end: number }; content: string }, index: number) => {
+              const { start, end } = comment.position;
+              const beforeComment = assignmentContent.slice(0, start);
+              const commentText = assignmentContent.slice(start, end);
+              const afterComment = assignmentContent.slice(end);
+              return (
+                <React.Fragment key={index}>
+                  <span>{beforeComment}</span>
+                  <span className={styles['highlighted-text']}>{commentText}</span>
+                  <span>{afterComment}</span>
+                </React.Fragment>
+              );
+            })}
+          </div>
         </div>
-      </div>
-      <div className={styles['center-column']}>
-        <div className={styles['assignment-header']}>
-          <h1>Assignment Name</h1>
+        <div className={styles['right-column']}>
+          <div className={styles['right-column-content']}>
+            <h2>Assignment Comments</h2>
+            <ul>
+              {comments.map((comment: { position: { start: number; end: number }; content: string }) => (
+                <li key={comment.content}>{comment.content}</li>
+              ))}
+            </ul>
+          </div>
         </div>
-        <div className={styles['ipsum-content']}>
-          <h2>Assignment Content</h2>
-          {/* Split the assignment content and wrap sections corresponding to comments with spans */}
-          {comments.map((comment: { position: { start: number; end: number }; content: string }, index: number) => {
-            const { start, end } = comment.position;
-            const beforeComment = assignmentContent.slice(0, start);
-            const commentText = assignmentContent.slice(start, end);
-            const afterComment = assignmentContent.slice(end);
-            return (
-              <React.Fragment key={index}>
-                <span>{beforeComment}</span>
-                <span className={styles['highlighted-text']}>{commentText}</span>
-                <span>{afterComment}</span>
-              </React.Fragment>
-            );
-          })}
-        </div>
-      </div>
-      <div className={styles['right-column']}>
-        <div className={styles['right-column-content']}>
-          <h2>Assignment Comments</h2>
-          <ul>
-            {comments.map((comment: { position: { start: number; end: number }; content: string }) => (
-              <li key={comment.content}>{comment.content}</li>
-            ))}
-          </ul>
-        </div>
-      </div>
       </div>
       <Footer />
     </div>

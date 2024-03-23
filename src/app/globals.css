@@ -31,6 +31,8 @@
   --card-rgb: 	249	249	249;
   --card-border-rgb: 204	204	204;
   --card-callout: rgb(200,223,196);
+  --text-colour: #000000;
+
 }
 
 @media (prefers-color-scheme: dark) {
@@ -112,13 +114,13 @@ button {
   border: none;
   border-radius: 4px;
   background-color: var(--clickable-primary);
-  color: #fff;
+  color: white;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: filter 0.3s ease;
 }
 
 button:hover {
-  background-color: #0056b3;
+  filter: brightness(0.8);
 }
 
 
