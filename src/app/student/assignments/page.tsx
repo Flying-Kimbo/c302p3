@@ -20,11 +20,11 @@ interface Course {
 
 function handleClick(state) {
   if (state == 'not-submitted') {
-    location.href='/student/submission';
+    location.href='/student/assignments/submission';
   } else if (state == 'submitted') {
-    location.href='/student/submission'; //FIXME this should point to a 'modify submission' page
+    location.href='/student/assignments/submission'; //FIXME this should point to a 'modify submission' page
   } else if (state == 'graded') {
-    location.href='/student/review';
+    location.href='/student/assignments/review';
   }
 }
 
