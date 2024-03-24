@@ -35,12 +35,12 @@ const SubmitAssignment = () => {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <div className={styles.header}>
         <h1>{assignment.name}</h1>
         <div className={styles.submissionInfo}>
-          <p>Due Date: {assignment.dueDate}</p>
-          <p>Class Name: {assignment.className}</p>
+          <div className={styles.infoContainer}>Due Date: {assignment.dueDate}</div>
+          <div className={styles.infoContainer}>Class Name: {assignment.className}</div>
           <button onClick={() => window.open(assignment.rubricUrl, '_blank')}>View Rubric</button>
         </div>
       </div>
