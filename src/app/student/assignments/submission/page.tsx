@@ -17,10 +17,10 @@ const SubmitAssignment = () => {
   // Variables
   const [assignmentUploaded, setAssignmentUploaded] = useState(false);
 
-  const handleFileDrop = (event) => {
+  const handleFileUpload = (event) => {
     // Handle file drop functionality here (not implemented yet)
     event.preventDefault();
-    console.log('File dropped');
+    console.log('File uploaded');
     setAssignmentUploaded(true);
   };
 
@@ -45,23 +45,28 @@ const SubmitAssignment = () => {
         </div>
       </div>
       { assignmentUploaded ? (
-        <div className={styles.submittedAssignment}>
-          <Image
-            src="/assignmentP1.png"
-            alt="assignment page 1"
-            width={600}
-            height={800}
-          />
-          <Image
-            src="/assignmentP2.png"
-            alt="assignment page 2"
-            width={600}
-            height={800}
-          />
-        </div>
+        <>
+          <div className={styles.submittedAssignment}>
+            <Image
+              src="/assignmentP1.png"
+              alt="assignment page 1"
+              width={600}
+              height={800}
+            />
+            <Image
+              src="/assignmentP2.png"
+              alt="assignment page 2"
+              width={600}
+              height={800}
+            />
+          </div>
+        </>
       ) : (
-        <div className={styles.dropArea} onDrop={handleFileDrop} onDragOver={(e) => e.preventDefault()}>
-          <p>Drag and drop your file here</p>
+        <div className={styles.dropArea} onDrop={handleFileUpload} onDragOver={(e) => e.preventDefault()}>
+          <div>
+            <p>Drag and drop your file here</p>
+            <input type="file" id="assignment" name="assignment" onChange={handleFileUpload} />
+          </div>
         </div>
       )}
       <div className={styles.buttons}>
