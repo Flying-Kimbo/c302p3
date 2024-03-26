@@ -15,6 +15,7 @@ const InstructorAssignments = () => {
   const handleReview = (assignmentId) => {
     // Handle review functionality here
     console.log(`Reviewing assignment with ID: ${assignmentId}`);
+    location.href="/instructor/assignments/review"
   };
 
   const handlePublishMarks = (assignmentId) => {
@@ -25,6 +26,7 @@ const InstructorAssignments = () => {
   const handleNewAssignment = () => {
     // Handle creation of a new assignment functionality here
     console.log('Creating a new assignment');
+    location.href="/instructor/assignments/create"
   };
 
   return (

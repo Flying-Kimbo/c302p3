@@ -12,7 +12,7 @@
 }
 
 .dropArea {
-  border: 2px dashed #ccc;
+  border: 2px dashed var(--card-border-color);
   padding: 20px;
   text-align: center;
   margin-bottom: 20px;

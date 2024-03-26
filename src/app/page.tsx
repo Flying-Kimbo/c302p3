@@ -22,16 +22,16 @@ export default function Login() {
     console.log('Username:', username);
     console.log('Password:', password);
 
-    if (username === "Instructor") {
+    if (username.toLowerCase() === "instructor") {
       location.href="/instructor/assignments"
-    } else if (username === "Student") {
+    } else if (username.toLowerCase() === "student") {
       location.href="/student/assignments"
     }
   };
 
   return (
     <div className={styles.container}>
-      <form onSubmit={handleSubmit} className={styles['login-form']}>
+      <form onSubmit={handleSubmit} className={[styles['login-form'], "card"].join(" ")}>
         <h1>Login</h1>
         <div className={styles['form-group']}>
           <label htmlFor="username">Username</label>
