@@ -28,7 +28,7 @@
 
   --callout-rgb: 238, 240, 241;
   --callout-border-rgb: 172, 175, 176;
-  --card-rgb: 	249	249	249;
+  --card-rgb: 	239	239	239;
   --card-border-rgb: 204	204	204;
   --card-callout: rgb(200,223,196);
   --text-colour: #000000;
@@ -67,6 +67,7 @@
 /* convenience variables */
 :root {
   --foreground-color: rgb(var(--foreground-rgb));
+  --background-color: rgb(var(--background-end-rgb));
   --card-border-color: rgb(var(--card-border-rgb));
   --card-color: rgb(var(--card-rgb));
   --clickable-primary: #007bff;

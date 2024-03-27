@@ -60,9 +60,9 @@ const Header = () => {
   return (
     <header className='header'>
       {conditionalBackButton()}
-      <span className='pageTitle'>
+      <h1 className='pageTitle'>
       {currentPage}
-      </span>
+      </h1>
     </header>
   );
 };
