@@ -20,16 +20,25 @@
   overflow-y: auto;
   background-color: var(--card-callout);
   padding: 10px;
+  align-items: center;
 }
 
 .left-column-content {
   margin-bottom: 20px; /* Add margin bottom to create space between button and table */
 }
 
-.grade-summary-button {
+.advanced-view-button { /*TODO center this.... and probably make it a different color*/
   background-color: #4CAF50;
   padding: 10px 20px;
-  display: inline-block;
+  align-self: center;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.grade-summary-button { /*TODO center this....*/
+  background-color: #4CAF50;
+  padding: 10px 20px;
+  align-self: center;
   font-size: 16px;
   margin-bottom: 10px;
 }
