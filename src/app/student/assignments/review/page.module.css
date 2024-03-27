@@ -1,8 +1,8 @@
 .main-layout {
   display: grid;
   grid-template-rows: 1fr 111px;
-  height: 93vh;
-  max-height: 95vh;
+  height: 89vh;
+  max-height: 90vh;
   overflow: auto;
 }
 

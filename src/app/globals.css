@@ -163,7 +163,7 @@ label {
 
 .card {
   border: 1px solid var(--card-border-color);
-  border-radius: 5px;
+  border-radius: 2px;
   padding: 10px;
   background-color: var(--card-color);
 }

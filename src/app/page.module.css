@@ -6,8 +6,10 @@
 }
 
 .login-form {
-  width: 300px;
-  padding: 20px;
+  min-width: calc(100vw / 3);
+  max-width: calc(100vw / 3);
+  padding: 15px;
+  margin-bottom: 33vh;
 }
 
 .form-group {

@@ -3,21 +3,21 @@ import styles from './footer.css';
 
 const Footer = () => {
   return (
-    <footer className={styles.footer}>
-      <div className={styles.legend}>
+    <footer className={'footer'}>
+      <div className={'legend'}>
         <h3>Legend</h3>
         <ul>
           <li>
-            <span className={`${styles.legendSquare} ${styles.aiComment}`}></span> AI-generated comment
+            <span className={'aiComment'}></span> AI-generated comment
           </li>
           <li>
-            <span className={`${styles.legendSquare} ${styles.instructorComment}`}></span> Instructor comment
+            <span className={`instructorComment`}></span> Instructor comment
           </li>
           <li>
-            <span className={`${styles.legendSquare} ${styles.plagiarismHighlight}`}></span> Plagiarism detection
+            <span className={'plagiarismHighlight'}></span> Plagiarism detection
           </li>
           <li>
-            <span className={`${styles.legendSquare} ${styles.similarityHighlight}`}></span> Similarities between students
+            <span className={'similarityHighlight'}></span> Similarities between students
           </li>
         </ul>
       </div>
