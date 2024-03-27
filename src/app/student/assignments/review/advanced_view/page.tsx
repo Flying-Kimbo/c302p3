@@ -24,20 +24,45 @@ ChartJS.register(
   Tooltip
 );
 const BarChart = () => {
-  const labels = ["January", "February", "March", "April", "May", "June"];
+  const labels = ["Published Articles", "Other Students", "Class Materials", "Creativity"];
   const data = {
     labels: labels,
     datasets: [
       {
-        label: "My First dataset",
+        label: "AI 1 - Proofreader.ai",
         backgroundColor: "rgb(255, 99, 132)",
         borderColor: "rgb(255, 99, 132)",
-        data: [0, 10, 5, 2, 20, 30, 45],
+        data: [0, 10, 5, 2, 20],
+      },
+      {
+        label: "AI 2 - Plagiarism Detector",
+        backgroundColor: "rgb(123, 99, 200)",
+        borderColor: "rgb(123, 99, 200)",
+        data: [20, 4, 2, 20, 4],
       },
     ],
   };
+
+  const config = {
+    type: 'bar',
+    data: data,
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+        title: {
+          display: true,
+          text: 'Chart.js Bar Chart'
+        }
+      }
+    },
+  };
+
+
   return (
-    <div>
+    <div className={styles['graph-container']}>
       <Bar data={data} />
     </div>
   );
@@ -55,7 +80,7 @@ const GraphPage = () => {
     <div className={styles.graphPage}>
       <h1>Graph Page</h1>
       <div className={styles.graphContainer}>
-        <h2>Significance vs. Factors</h2>
+        <h2>AI Detected Factors affecting Assignment Marking</h2>
         <BarChart />
       </div>
     </div>
