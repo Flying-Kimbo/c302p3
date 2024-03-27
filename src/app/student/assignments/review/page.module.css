@@ -15,15 +15,20 @@
 
 /* Assuming --card-callout is defined */
 .left-column {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
   flex: 1;
   max-width: 20%;
   overflow-y: auto;
   background-color: var(--card-callout);
   padding: 10px;
-  align-items: center;
 }
 
 .left-column-content {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
   margin-bottom: 20px; /* Add margin bottom to create space between button and table */
 }
 
