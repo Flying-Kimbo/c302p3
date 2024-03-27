@@ -1,7 +1,8 @@
 'use client'
 
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './page.module.css';
+import Image from 'next/image';
 
 const SubmitAssignment = () => {
   // Dummy assignment data
@@ -10,12 +11,17 @@ const SubmitAssignment = () => {
     dueDate: '2024-03-20',
     className: 'Mathematics',
     rubricUrl: 'https://example.com/rubric',
+
   };
 
-  const handleFileDrop = (event) => {
+  // Variables
+  const [assignmentUploaded, setAssignmentUploaded] = useState(false);
+
+  const handleFileUpload = (event) => {
     // Handle file drop functionality here (not implemented yet)
     event.preventDefault();
-    console.log('File dropped');
+    console.log('File uploaded');
+    setAssignmentUploaded(true);
   };
 
   const handleSubmit = () => {
@@ -29,18 +35,40 @@ const SubmitAssignment = () => {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <div className={styles.header}>
         <h1>{assignment.name}</h1>
         <div className={styles.submissionInfo}>
-          <p>Due Date: {assignment.dueDate}</p>
-          <p>Class Name: {assignment.className}</p>
+          <div className={styles.infoContainer}>Due Date: {assignment.dueDate}</div>
+          <div className={styles.infoContainer}>Class Name: {assignment.className}</div>
           <button onClick={() => window.open(assignment.rubricUrl, '_blank')}>View Rubric</button>
         </div>
       </div>
-      <div className={styles.dropArea} onDrop={handleFileDrop} onDragOver={(e) => e.preventDefault()}>
-        <p>Drag and drop your file here</p>
-      </div>
+      { assignmentUploaded ? (
+        <>
+          <div className={styles.submittedAssignment}>
+            <Image
+              src="/assignmentP1.png"
+              alt="assignment page 1"
+              width={600}
+              height={800}
+            />
+            <Image
+              src="/assignmentP2.png"
+              alt="assignment page 2"
+              width={600}
+              height={800}
+            />
+          </div>
+        </>
+      ) : (
+        <div className={styles.dropArea} onDrop={handleFileUpload} onDragOver={(e) => e.preventDefault()}>
+          <div>
+            <p>Drag and drop your file here</p>
+            <input type="file" id="assignment" name="assignment" onChange={handleFileUpload} />
+          </div>
+        </div>
+      )}
       <div className={styles.buttons}>
         <button onClick={handleSubmit}>Submit</button>
         <button onClick={goBack}>Back</button>

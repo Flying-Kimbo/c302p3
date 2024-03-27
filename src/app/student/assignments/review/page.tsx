@@ -1,8 +1,9 @@
 'use client'
 
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './page.module.css';
 import * as yaml from 'js-yaml'; // Import the js-yaml library
+import { Tooltip } from 'react-tooltip';
 
 import Footer from './footer';
 
@@ -23,6 +24,7 @@ const StudentGradeSummary = (_rubricData, _studentMarksData) => {
   // Calculate total marks and total student marks
   const totalMarks = rubricData.reduce((total, { max_marks }) => total + max_marks, 0);
   const totalStudentMarks = studentMarksData.reduce((total, { student_marks }) => total + student_marks, 0);
+  const percentageMark = ((totalStudentMarks / totalMarks) * 100).toFixed(1);
 
   // Function to show rubric
   const handleShowRubric = () => {
@@ -55,14 +57,16 @@ const StudentGradeSummary = (_rubricData, _studentMarksData) => {
           })}
           <tr className={styles['grade-summary-total']}>
             <td>Total</td>
-            <td>{`${totalStudentMarks}/${totalMarks}`}</td>
+            <td>{`${totalStudentMarks}/${totalMarks} = ${percentageMark}%`}</td>
           </tr>
         </tbody>
       </table>
+      <button className={styles['advanced-view-button']} onClick={()=>location.href='review/advanced_view'}>
+        Show advanced view
+      </button>
     </div>
   );
 };
-
 
 const StudentReviewPage = () => {
   // Example YAML content (replace with actual content loaded from file)
@@ -82,17 +86,25 @@ const StudentReviewPage = () => {
           start: 200
           end: 250
         content: "Great job on including relevant content here!"
+
+    general:
+      - comment: Lorem Ipsum dolet sit amur
+      - comment: This is yet another comment, I don't quite know what I am commenting on
+      - comment: YAAAAAA
   `;
 
   // Parse YAML content
   const data = yaml.load(yamlContent);
 
   // Extract rubric and comments from data object
-  const { rubric, comments } = data;
+  const { rubric, comments, general } = data;
 
   // Text content of the assignment
   let assignmentContent = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-  // assignmentContent = assignmentContent.repeat(10); // uncomment to extend lorem ipsum to test scrolling
+  assignmentContent = assignmentContent.repeat(10); // uncomment to extend lorem ipsum to test scrolling
+
+  const [tooltipContent, setTooltipContent] = useState(""); // State to hold tooltip content
+  const [tooltipPosition, setTooltipPosition] = useState({}); // State to hold tooltip position
 
   // Render comments with highlighted text
   return (
@@ -114,7 +126,7 @@ const StudentReviewPage = () => {
           <div className={styles['ipsum-content']}>
             <h2>Assignment Content</h2>
             {/* Split the assignment content and wrap sections corresponding to comments with spans */}
-            {comments.map((comment: { position: { start: number; end: number }; content: string }, index: number) => {
+            {comments.map((comment, index) => {
               const { start, end } = comment.position;
               const beforeComment = assignmentContent.slice(0, start);
               const commentText = assignmentContent.slice(start, end);
@@ -122,19 +134,29 @@ const StudentReviewPage = () => {
               return (
                 <React.Fragment key={index}>
                   <span>{beforeComment}</span>
-                  <span className={styles['highlighted-text']}>{commentText}</span>
+                  <span
+                    className={styles['highlighted-text']}
+                    data-tooltip-id="comment-tooltip"
+                    data-tooltip-content={comment.content}
+                    data-tooltip-place="top"
+                  >
+                    {commentText}
+                  </span>
                   <span>{afterComment}</span>
                 </React.Fragment>
               );
             })}
+              <Tooltip
+                id="comment-tooltip"
+              />
           </div>
         </div>
         <div className={styles['right-column']}>
           <div className={styles['right-column-content']}>
             <h2>Assignment Comments</h2>
             <ul>
-              {comments.map((comment: { position: { start: number; end: number }; content: string }) => (
-                <li key={comment.content}>{comment.content}</li>
+              {general.map((general, index) => (
+                <li key={index}>{general.comment}</li>
               ))}
             </ul>
           </div>

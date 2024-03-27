@@ -1,8 +1,8 @@
 .main-layout {
   display: grid;
   grid-template-rows: 1fr 111px;
-  height: 100vh;
-  max-height: 100vh;
+  height: 93vh;
+  max-height: 95vh;
   overflow: auto;
 }
 
@@ -15,6 +15,9 @@
 
 /* Assuming --card-callout is defined */
 .left-column {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
   flex: 1;
   max-width: 20%;
   overflow-y: auto;
@@ -23,13 +26,24 @@
 }
 
 .left-column-content {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
   margin-bottom: 20px; /* Add margin bottom to create space between button and table */
 }
 
-.grade-summary-button {
+.advanced-view-button { /*TODO center this.... and probably make it a different color*/
   background-color: #4CAF50;
   padding: 10px 20px;
-  display: inline-block;
+  align-self: center;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.grade-summary-button { /*TODO center this....*/
+  background-color: #4CAF50;
+  padding: 10px 20px;
+  align-self: center;
   font-size: 16px;
   margin-bottom: 10px;
 }

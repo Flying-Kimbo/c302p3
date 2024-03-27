@@ -1,3 +1,7 @@
+.container {
+  padding: 10px;
+}
+
 .header {
   margin-bottom: 20px;
 }
@@ -7,15 +11,29 @@
   align-items: center;
 }
 
-.submissionInfo p {
+.submissionInfo .infoContainer {
   margin-right: 20px;
 }
 
 .dropArea {
+  display: flex;
+  justify-content: center;
   border: 2px dashed var(--card-border-color);
   padding: 20px;
-  text-align: center;
   margin-bottom: 20px;
+}
+
+.submittedAssignment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 10px;
+}
+
+.submittedAssignment img {
+  max-width: 100%;
+  height: auto;
 }
 
 .buttons {
