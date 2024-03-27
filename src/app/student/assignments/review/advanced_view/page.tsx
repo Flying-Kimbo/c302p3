@@ -1,6 +1,47 @@
-// GraphPage.tsx
+'use client'
+
 import React from 'react';
 import styles from './page.module.css';
+import Chart from "chart.js";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  PointElement,
+  LineElement,
+  BarElement,
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
+
+// Register ChartJS components using ChartJS.register
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Tooltip
+);
+const BarChart = () => {
+  const labels = ["January", "February", "March", "April", "May", "June"];
+  const data = {
+    labels: labels,
+    datasets: [
+      {
+        label: "My First dataset",
+        backgroundColor: "rgb(255, 99, 132)",
+        borderColor: "rgb(255, 99, 132)",
+        data: [0, 10, 5, 2, 20, 30, 45],
+      },
+    ],
+  };
+  return (
+    <div>
+      <Bar data={data} />
+    </div>
+  );
+};
 
 const GraphPage = () => {
   const data = [
@@ -15,13 +56,7 @@ const GraphPage = () => {
       <h1>Graph Page</h1>
       <div className={styles.graphContainer}>
         <h2>Significance vs. Factors</h2>
-        <div className={styles.barChart}>
-          {data.map((item, index) => (
-            <div key={index} className={styles.bar} style={{ height: `${item.significance * 100}%` }} data-tooltip={item.tooltip}>
-              {item.factor}
-            </div>
-          ))}
-        </div>
+        <BarChart />
       </div>
     </div>
   );
