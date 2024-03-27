@@ -79,6 +79,10 @@ const StudentReviewPage = () => {
 
     comments:
       - position:
+          start: 10
+          end: 20
+        content: "???"
+      - position:
           start: 100
           end: 150
         content: "You need to work on your grammar in this paragraph."
@@ -94,10 +98,6 @@ const StudentReviewPage = () => {
           start: 700
           end: 1000
         content: "Really? Are you even trying?"
-      - position:
-          start: 10
-          end: 20
-        content: "???"
 
     general:
       - comment: Lorem Ipsum dolet sit amur
