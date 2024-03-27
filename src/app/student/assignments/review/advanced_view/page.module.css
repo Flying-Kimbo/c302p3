@@ -3,8 +3,10 @@
   padding: 20px;
 }
 
-.graphContainer {
+.graph-container {
   margin-top: 20px;
+  max-height: 75vh;
+  align-items: center;
 }
 
 .barChart {
