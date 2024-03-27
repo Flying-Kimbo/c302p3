@@ -28,11 +28,11 @@
 
   --callout-rgb: 238, 240, 241;
   --callout-border-rgb: 172, 175, 176;
-  --card-rgb: 	249	249	249;
-  --card-border-rgb: 204	204	204;
+  --card-rgb: 	249, 249, 249;
+  --card-border-rgb: 204, 204, 204;
   --card-callout: rgb(200,223,196);
-  --text-colour: #000000;
-
+  --card-textarea-color: #E7FCB9;
+  --text-colour: #284E35;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -55,11 +55,13 @@
 
     --callout-rgb: 20, 20, 20;
     --callout-border-rgb: 108, 108, 108;
-    --card-rgb: 100, 100, 100;
-    --card-border-rgb: 200, 200, 200;
-    --card-callout: #312876;
+    --card-rgb: 197, 255, 223;
+    --card-border-rgb: 5, 28, 15;
+    --button-text-color: white;
+    color: rgb(1, 10, 5);
 
-    --text-colour: #e8e6e3;
+    --card-callout: #312876;
+    --card-textarea-color: #f0ffd1;
   }
 }
 
@@ -69,7 +71,7 @@
   --foreground-color: rgb(var(--foreground-rgb));
   --card-border-color: rgb(var(--card-border-rgb));
   --card-color: rgb(var(--card-rgb));
-  --clickable-primary: #007bff;
+  --clickable-primary: #284E35;
 }
 
 * {
@@ -114,9 +116,14 @@ button {
   border: none;
   border-radius: 4px;
   background-color: var(--clickable-primary);
-  color: white;
+  color: var(--button-text-color);
   cursor: pointer;
   transition: filter 0.3s ease;
+
+  /* Fill content of container */
+  display: block;
+  margin: 0 0 0 0;
+  width: 100%;
 }
 
 button:hover {
@@ -167,3 +174,8 @@ label {
   padding: 10px;
   background-color: var(--card-color);
 }
+
+input[type="text"], input[type="password"], textarea {
+  background-color: var(--card-textarea-color);
+}
+
