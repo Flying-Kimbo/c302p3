@@ -24,6 +24,7 @@ const StudentGradeSummary = (_rubricData, _studentMarksData) => {
   // Calculate total marks and total student marks
   const totalMarks = rubricData.reduce((total, { max_marks }) => total + max_marks, 0);
   const totalStudentMarks = studentMarksData.reduce((total, { student_marks }) => total + student_marks, 0);
+  const percentageMark = ((totalStudentMarks / totalMarks) * 100).toFixed(1);
 
   // Function to show rubric
   const handleShowRubric = () => {
@@ -56,10 +57,13 @@ const StudentGradeSummary = (_rubricData, _studentMarksData) => {
           })}
           <tr className={styles['grade-summary-total']}>
             <td>Total</td>
-            <td>{`${totalStudentMarks}/${totalMarks}`}</td>
+            <td>{`${totalStudentMarks}/${totalMarks} = ${percentageMark}%`}</td>
           </tr>
         </tbody>
       </table>
+      <button className={styles['advanced-view-button']} onClick={()=>location.href='review/advanced_view'}>
+        Show advanced view
+      </button>
     </div>
   );
 };
