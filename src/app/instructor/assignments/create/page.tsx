@@ -34,6 +34,7 @@ const CreateAssignment = () => {
   const handleCreateAssignment = () => {
     // Handle creation of assignment functionality here
     console.log('Creating assignment...');
+    location.href="/instructor/assignments"
   };
 
   return (
