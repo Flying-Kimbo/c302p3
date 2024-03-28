@@ -35,6 +35,12 @@ const InstructorGradeSummary = () => {
     console.log("Show rubric");
   };
 
+  const handleCompleteMarking = () => {
+    // Logic to complete marking
+    console.log("Complete marking");
+    location.href = "/instructor/assignments";
+  }
+
   return (
     <div className={styles['left-column-content']}>
       <button className={styles['grade-summary-button']} onClick={handleShowRubric}>
@@ -69,6 +75,9 @@ const InstructorGradeSummary = () => {
           </tr>
         </tbody>
       </table>
+      <button onClick={handleCompleteMarking}>
+        Complete Marking
+      </button>
     </div>
   );
 };
@@ -122,8 +131,8 @@ const InstructorReviewPage = () => {
 
   const commentDivs = comments.sort((a, b) => a.position.end - b.position.end).map(({ content, id }: { content: string, id: number }, index: number) => {
     return (
-      <div 
-        key={index} 
+      <div
+        key={index}
         data-comment-id={id}
         className={styles['comment']}>
         <b>Comment</b> <br />
@@ -135,12 +144,12 @@ const InstructorReviewPage = () => {
           for (let i = 0; i < commentDivs.length; i++) {
             const commentReactDiv = commentDivs[i] as React.ReactElement;
             const id = commentReactDiv.props["data-comment-id"];
-            
+
             // Position comment to as close to its text as possible
             const highlightedText = document.querySelector(`.${styles['highlighted-text']}[data-comment-id="${id}"]`) as HTMLSpanElement;
             const commentDiv = document.querySelector(`.${styles['comment']}[data-comment-id="${id}"]`) as HTMLDivElement;
             commentDiv.style.position = 'absolute';
-            
+
             let positionedTop = highlightedText.offsetTop - 60; // minus 60 bc the header is 60px tall
             if (i > 0) {
               // Check if we are overlapping with predecessor
@@ -159,24 +168,24 @@ const InstructorReviewPage = () => {
   function onCommentClick(event: React.MouseEvent<HTMLSpanElement>) {
     const target = event.target as HTMLElement;
     const id = target.getAttribute("data-comment-id");
-    
+
     document.querySelectorAll(`.${styles['comment']}`).forEach(commentDiv => commentDiv.classList.remove(styles.active));
     const commentDiv = document.querySelector(`.${styles['comment']}[data-comment-id="${id}"]`);
     commentDiv!.classList.add(styles.active);
   }
-  
+
   useEffect(() => {
     function onResize() {
       let cannotBeLessThan = 0; // overlap check
       for (let i = 0; i < commentDivs.length; i++) {
         const commentReactDiv = commentDivs[i] as React.ReactElement;
         const id = commentReactDiv.props["data-comment-id"];
-        
+
         // Position comment to as close to its text as possible
         const highlightedText = document.querySelector(`.${styles['highlighted-text']}[data-comment-id="${id}"]`) as HTMLSpanElement;
         const commentDiv = document.querySelector(`.${styles['comment']}[data-comment-id="${id}"]`) as HTMLDivElement;
         commentDiv.style.position = 'absolute';
-        
+
         let positionedTop = highlightedText.offsetTop - 60; // minus 60 bc the header is 60px tall
         if (i > 0) {
           // Check if we are overlapping with predecessor
@@ -250,7 +259,7 @@ const InstructorReviewPage = () => {
 
       }
     }
-    
+
     document.addEventListener("mouseup", onMouseUp);
 
     return () => document.removeEventListener("mouseup", onMouseUp);
