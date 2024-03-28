@@ -2,6 +2,7 @@
 
 import React from 'react';
 import styles from './page.module.css';
+import { useSearchParams } from 'next/navigation';
 
 interface Assignment {
   id: number;
@@ -20,27 +21,13 @@ interface Course {
 
 function handleClick(state) {
   if (state == 'not-submitted') {
-    location.href='/student/assignments/submission';
+    location.href='/student/assignments/submission?submitted=false';
   } else if (state == 'submitted') {
-    location.href='/student/assignments/submission'; //FIXME this should point to a 'modify submission' page
+    location.href='/student/assignments/submission?submitted=true';
   } else if (state == 'graded') {
     location.href='/student/assignments/review';
   }
 }
-
-const coursesData: Course[] = [
-  { id: 1, name: 'Mathematics' },
-  { id: 2, name: 'English' },
-  // Add more courses as needed
-];
-
-const assignmentsData: Assignment[] = [
-  { id: 1, courseId: 1, name: 'Assignment 1', dueDate: 'March 20, 2024', weight: '20%', state: 'not-submitted', grade: 'Grading Incomplete' },
-  { id: 2, courseId: 1, name: 'Assignment 2', dueDate: 'March 25, 2024', weight: '30%', state: 'submitted', grade: 'B+' },
-  { id: 3, courseId: 2, name: 'Assignment 1', dueDate: 'March 20, 2024', weight: '25%', state: 'graded', grade: 'A' },
-  { id: 4, courseId: 2, name: 'Assignment 2', dueDate: 'March 25, 2024', weight: '25%', state: 'not-submitted', grade: 'Grading Incomplete' },
-  // Add more assignments as needed
-];
 
 const getBubbleClass = (state: string, index: number) => {
   switch (state) {
@@ -82,6 +69,24 @@ const getButtonText = (state: string) => {
 };
 
 const StudentAssignments = () => {
+  const searchParams = useSearchParams();
+  const submitted = searchParams.get('submitted');
+
+  // Dummy data
+  const coursesData: Course[] = [
+    { id: 1, name: 'Mathematics' },
+    { id: 2, name: 'English' },
+    // Add more courses as needed
+  ];
+  
+  const assignmentsData: Assignment[] = [
+    { id: 1, courseId: 1, name: 'Assignment 1', dueDate: 'March 20, 2024', weight: '20%', state: ((submitted === 'true') ? 'submitted' : 'not-submitted'), grade: 'Grading Incomplete' },
+    { id: 2, courseId: 1, name: 'Assignment 2', dueDate: 'March 25, 2024', weight: '30%', state: 'submitted', grade: 'B+' },
+    { id: 3, courseId: 2, name: 'Assignment 1', dueDate: 'March 20, 2024', weight: '25%', state: 'graded', grade: 'A' },
+    { id: 4, courseId: 2, name: 'Assignment 2', dueDate: 'March 25, 2024', weight: '25%', state: 'not-submitted', grade: 'Grading Incomplete' },
+    // Add more assignments as needed
+  ];
+  
   return (
     <div className={styles['student-assignments']}>
       {coursesData.map((course) => (
