@@ -122,6 +122,8 @@ const config = {
   options: {
     responsive: true,
     scales: {
+      yAxes: [{ticks: {fontColor: "#fff"}}],
+      xAxes: [{ticks: {fontColor: "#fff"}}],
       x: {
         stacked: true,
       },
