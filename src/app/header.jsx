@@ -11,6 +11,8 @@ function getPageTitle() {
     if (currentPage === '') {
       currentPage = 'Login';
     }
+
+    currentPage = currentPage.replace("_"," ");
     //capitalize the first letter of the current page
     currentPage = currentPage.charAt(0).toUpperCase() + currentPage.slice(1);
     return currentPage;

@@ -149,7 +149,7 @@ const AiModelSection = ({ model, id }) => (
 );
 function GraphPage({ data }) {
   const handleBarClick = () => {
-    const index = Math.floor(Math.random() * 7);
+    const index = Math.floor(Math.random() * 6);
     const descriptionId = `description-${index}`;
     const descriptionElement = document.getElementById(descriptionId);
     if (descriptionElement) {
@@ -162,6 +162,7 @@ function GraphPage({ data }) {
     <div className={styles.graphContainer}>
       <h2>AI Detected Factors affecting Assignment Marking</h2>
       <Bar className={styles['graph-container']} data={dataset} options={config} onClick={handleBarClick} />
+      Hover and click for more information
     </div>
     <div>
     <h2>Graph Explanation</h2>
