@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import styles from './page.module.css';
-
+import Page, { Header, Body } from "../../../components/Page";
 
 
 
@@ -65,54 +65,59 @@ const InstructorAssignments = () => {
   }
 
   return (
-    <div>
-      <div className={styles.assignmentsContainer}>
-        <div className={styles.buttons}>
-          <button onClick={handleNewAssignment}>Create New Assignment</button>
-        </div>
-        {assignments.map((assignment) => (
-          <div key={assignment.id} className={styles.assignmentTile}>
-            <div className={styles.assignmentInfo}>
-              <h3>{assignment.name}</h3>
-              <p>Due Date: {assignment.dueDate}</p>
-              {/* display a count of marked assignments if past due date */}
-              {Date.now() > Date.parse(assignment.dueDate) ?
-                <span>{assignment.markedCount} / {assignment.totalCount} Marked ({assignment.marksPublished ? "Published" : "Unpublished"})</span>
-                :
-                null}
+    <Page>
+      <Header text="Create Assignment" />
+      <Body>
+        <div>
+          <div className={styles.assignmentsContainer}>
+            <div className={styles.buttons}>
+              <button onClick={handleNewAssignment}>Create New Assignment</button>
             </div>
-            <div className={styles.actions}>
-              {/* Allow instructor to review assignments if past due date */}
-              {Date.now() > Date.parse(assignment.dueDate) ?
-                <div className={styles.dropdown}>
-                  <button className={styles.dropbtn}>Review Students</button>
-                  <div className={styles.dropdownContent}>
-                    {assignment.markedCount != assignment.totalCount ? (<p>Unmarked Submissions:</p>) : null}
-                    <div className={styles.studentList}>
-                      {getUnmarkedStudents(assignment.id).map((student) => (
-                        <button key={student.id} onClick={() => handleReview(assignment.id, student.id)}>{student.name}</button>
-                      ))}
-                    </div>
-                    {assignment.markedCount > 0 ? (<p>Marked Submissions:</p>) : null}
-                    <div className={styles.studentList}>
-                      {getMarkedStudents(assignment.id).map((student) => (
-                        <button key={student.id} onClick={() => handleReview(assignment.id, student.id)}>{student.name}</button>
-                      ))}
-                    </div>
-                  </div>
+            {assignments.map((assignment) => (
+              <div key={assignment.id} className={styles.assignmentTile}>
+                <div className={styles.assignmentInfo}>
+                  <h3>{assignment.name}</h3>
+                  <p>Due Date: {assignment.dueDate}</p>
+                  {/* display a count of marked assignments if past due date */}
+                  {Date.now() > Date.parse(assignment.dueDate) ?
+                    <span>{assignment.markedCount} / {assignment.totalCount} Marked ({assignment.marksPublished ? "Published" : "Unpublished"})</span>
+                    :
+                    null}
                 </div>
-                :
-                null}
-              {/* allow instructor to publish marks if all submissions are marked */}
-              {(assignment.markedCount == assignment.totalCount && !assignment.marksPublished) ?
-                (<button onClick={() => handlePublishMarks(assignment.id)}>Publish Marks</button>)
-                :
-                null}
-            </div>
+                <div className={styles.actions}>
+                  {/* Allow instructor to review assignments if past due date */}
+                  {Date.now() > Date.parse(assignment.dueDate) ?
+                    <div className={styles.dropdown}>
+                      <button className={styles.dropbtn}>Review Students</button>
+                      <div className={styles.dropdownContent}>
+                        {assignment.markedCount != assignment.totalCount ? (<p>Unmarked Submissions:</p>) : null}
+                        <div className={styles.studentList}>
+                          {getUnmarkedStudents(assignment.id).map((student) => (
+                            <button key={student.id} onClick={() => handleReview(assignment.id, student.id)}>{student.name}</button>
+                          ))}
+                        </div>
+                        {assignment.markedCount > 0 ? (<p>Marked Submissions:</p>) : null}
+                        <div className={styles.studentList}>
+                          {getMarkedStudents(assignment.id).map((student) => (
+                            <button key={student.id} onClick={() => handleReview(assignment.id, student.id)}>{student.name}</button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                    :
+                    null}
+                  {/* allow instructor to publish marks if all submissions are marked */}
+                  {(assignment.markedCount == assignment.totalCount && !assignment.marksPublished) ?
+                    (<button onClick={() => handlePublishMarks(assignment.id)}>Publish Marks</button>)
+                    :
+                    null}
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-    </div>
+        </div>
+      </Body>
+    </Page>
   );
 };
 

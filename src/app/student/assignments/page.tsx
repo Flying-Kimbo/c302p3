@@ -3,6 +3,7 @@
 import React from 'react';
 import styles from './page.module.css';
 import { useSearchParams } from 'next/navigation';
+import Page, { Header, Body } from "../../../components/Page";
 
 interface Assignment {
   id: number;
@@ -88,50 +89,55 @@ const StudentAssignments = () => {
   ];
   
   return (
-    <div className={styles['student-assignments']}>
-      {coursesData.map((course) => (
-        <div key={course.id} className={styles['course-container']}>
-          <div className={styles['course-info']}>
-            <h2>{course.name}</h2>
-          </div>
-          <div className={styles['assignment-list']}>
-            {assignmentsData
-              .filter((assignment) => assignment.courseId === course.id)
-              .map((assignment) => (
-                <div key={assignment.id} className={styles.assignment}>
-                  <h3 className={styles['assignment-title']}>{assignment.name}</h3>
-                  <p>Due Date: {assignment.dueDate}</p>
-                  <div>
-                  <span><b>Weight</b>: {assignment.weight}</span>
-                  </div>
-                  <div>
-                  <span><b>Grade</b>: {assignment.state === 'graded' ? assignment.grade : 'Grading Incomplete'}</span>
-                  </div>
-                  <div className={styles['progress-indicator']}>
-                  <div className={styles['key-value-pair']}>
-                  <span className={styles['bubble-text']}>Open</span>
-                  <div className={`${styles['bubble']} ${getBubbleClass(assignment.state, 0)}`}></div>
-                  </div>
-                  <div className={styles['key-value-pair']}>
-                  <span className={styles['bubble-text']}>Submitted</span>
-                  <div className={`${styles['bubble']} ${getBubbleClass(assignment.state, 1)}`}></div>
-                  </div>
-                  <div className={styles['key-value-pair']}>
-                  <span className={styles['bubble-text']}>Graded</span>
-                  <div className={`${styles['bubble']} ${getBubbleClass(assignment.state, 2)}`}></div>
-                  </div>
-                  </div>
-                  <button className={`${styles['assignment-button']} ${getButtonClass(assignment.state)}`}
-                          onClick={() => handleClick(assignment.state)}
-                  >
-                    {getButtonText(assignment.state)}
-                  </button>
-                </div>
-              ))}
-          </div>
+    <Page>
+      <Header text="Assignments" />
+      <Body>
+        <div className={styles['student-assignments']}>
+          {coursesData.map((course) => (
+            <div key={course.id} className={styles['course-container']}>
+              <div className={styles['course-info']}>
+                <h2>{course.name}</h2>
+              </div>
+              <div className={styles['assignment-list']}>
+                {assignmentsData
+                  .filter((assignment) => assignment.courseId === course.id)
+                  .map((assignment) => (
+                    <div key={assignment.id} className={styles.assignment}>
+                      <h3 className={styles['assignment-title']}>{assignment.name}</h3>
+                      <p>Due Date: {assignment.dueDate}</p>
+                      <div>
+                      <span><b>Weight</b>: {assignment.weight}</span>
+                      </div>
+                      <div>
+                      <span><b>Grade</b>: {assignment.state === 'graded' ? assignment.grade : 'Grading Incomplete'}</span>
+                      </div>
+                      <div className={styles['progress-indicator']}>
+                      <div className={styles['key-value-pair']}>
+                      <span className={styles['bubble-text']}>Open</span>
+                      <div className={`${styles['bubble']} ${getBubbleClass(assignment.state, 0)}`}></div>
+                      </div>
+                      <div className={styles['key-value-pair']}>
+                      <span className={styles['bubble-text']}>Submitted</span>
+                      <div className={`${styles['bubble']} ${getBubbleClass(assignment.state, 1)}`}></div>
+                      </div>
+                      <div className={styles['key-value-pair']}>
+                      <span className={styles['bubble-text']}>Graded</span>
+                      <div className={`${styles['bubble']} ${getBubbleClass(assignment.state, 2)}`}></div>
+                      </div>
+                      </div>
+                      <button className={`${styles['assignment-button']} ${getButtonClass(assignment.state)}`}
+                              onClick={() => handleClick(assignment.state)}
+                      >
+                        {getButtonText(assignment.state)}
+                      </button>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
+      </Body>
+    </Page>
   );
 };
 
