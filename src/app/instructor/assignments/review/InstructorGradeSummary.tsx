@@ -32,17 +32,12 @@ export default function InstructorGradeSummary() {
     console.log("Show rubric");
   };
 
-  const handleCompleteMarking = () => {
-    // Logic to complete marking
-    console.log("Complete marking");
-    location.href = "/instructor/assignments";
-  }
-
   return (
     <div className={styles['left-column-content']}>
       <button className={styles['grade-summary-button']} onClick={handleShowRubric}>
         Show Rubric
       </button>
+      <br />
       <table className={styles['grade-summary-table']}>
         <thead>
           <tr>
@@ -72,9 +67,6 @@ export default function InstructorGradeSummary() {
           </tr>
         </tbody>
       </table>
-      <button onClick={handleCompleteMarking}>
-        Complete Marking
-      </button>
     </div>
   );
 };
