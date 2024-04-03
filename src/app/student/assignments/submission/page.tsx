@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import styles from './page.module.css';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
+import Page, { Body, Header } from '@/components/Page';
 
 const Submission = () => {
   const searchParams = useSearchParams();
@@ -40,49 +41,54 @@ const Submission = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h1>{assignment.name}</h1>
-        <div className={styles.submissionInfo}>
-          <div className={styles.infoContainer}>Due Date: {assignment.dueDate}</div>
-          <div className={styles.infoContainer}>Class Name: {assignment.className}</div>
-          <button onClick={() => window.open(assignment.rubricUrl, '_blank')}>View Rubric</button>
-        </div>
-      </div>
-      { assignmentUploaded ? (
-        <>
-          <div className={styles.submittedAssignment}>
-            <Image
-              src="/assignmentP1.png"
-              alt="assignment page 1"
-              width={600}
-              height={800}
-            />
-            <Image
-              src="/assignmentP2.png"
-              alt="assignment page 2"
-              width={600}
-              height={800}
-            />
-            <div className={styles.reupload}>
-                <p>Upload a different file?</p>
-                <input type="file" id="assignment" name="assignment" onChange={handleFileUpload} />
+    <Page>
+      <Header text="Submit Assignment" />
+      <Body>
+        <div className={styles.container}>
+          <div className={styles.header}>
+            <h1>{assignment.name}</h1>
+            <div className={styles.submissionInfo}>
+              <div className={styles.infoContainer}>Due Date: {assignment.dueDate}</div>
+              <div className={styles.infoContainer}>Class Name: {assignment.className}</div>
+              <button onClick={() => window.open(assignment.rubricUrl, '_blank')}>View Rubric</button>
             </div>
           </div>
-        </>
-      ) : (
-        <div className={styles.dropArea} onDrop={handleFileUpload} onDragOver={(e) => e.preventDefault()}>
-          <div>
-            <p>Drag and drop your file here</p>
-            <input type="file" id="assignment" name="assignment" onChange={handleFileUpload} />
+          { assignmentUploaded ? (
+            <>
+              <div className={styles.submittedAssignment}>
+                <Image
+                  src="/assignmentP1.png"
+                  alt="assignment page 1"
+                  width={600}
+                  height={800}
+                />
+                <Image
+                  src="/assignmentP2.png"
+                  alt="assignment page 2"
+                  width={600}
+                  height={800}
+                />
+                <div className={styles.reupload}>
+                    <p>Upload a different file?</p>
+                    <input type="file" id="assignment" name="assignment" onChange={handleFileUpload} />
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className={styles.dropArea} onDrop={handleFileUpload} onDragOver={(e) => e.preventDefault()}>
+              <div>
+                <p>Drag and drop your file here</p>
+                <input type="file" id="assignment" name="assignment" onChange={handleFileUpload} />
+              </div>
+            </div>
+          )}
+          <div className={styles.buttons}>
+            <button onClick={handleSubmit}>Submit</button>
+            <button onClick={goBack}>Back</button>
           </div>
         </div>
-      )}
-      <div className={styles.buttons}>
-        <button onClick={handleSubmit}>Submit</button>
-        <button onClick={goBack}>Back</button>
-      </div>
-    </div>
+      </Body>
+    </Page>
   );
 };
 

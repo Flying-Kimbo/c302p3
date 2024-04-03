@@ -6,6 +6,7 @@ import * as yaml from 'js-yaml'; // Import the js-yaml library
 import { Tooltip } from 'react-tooltip';
 
 import Footer from './footer';
+import Page, { Body, Header } from '@/components/Page';
 
 const StudentGradeSummary = (_rubricData, _studentMarksData) => {
   // Assuming rubric data and student marks data are available
@@ -108,62 +109,67 @@ const StudentReviewPage = () => {
 
   // Render comments with highlighted text
   return (
-    <div className={styles['main-layout']}>
-      <div className={styles['review-page']}>
-        <div className={styles['left-column']}>
-          <h2>English</h2>
-          <div className={`${styles['assignment-details']}`}> {/* Apply left-column-content style here */}
-            <h3>Rubric Details</h3>
+    <Page>
+      <Header text="Assignment Review" />
+      <Body>
+        <div className={styles['main-layout']}>
+          <div className={styles['review-page']}>
+            <div className={styles['left-column']}>
+              <h2>English</h2>
+              <div className={`${styles['assignment-details']}`}> {/* Apply left-column-content style here */}
+                <h3>Rubric Details</h3>
+              </div>
+              <div className={`${styles['assignment-details-widget']}`}>
+                {StudentGradeSummary('', '')}
+              </div>
+            </div>
+            <div className={styles['center-column']}>
+              <div className={styles['assignment-header']}>
+                <h1>Assignment Name</h1>
+              </div>
+              <div className={styles['ipsum-content']}>
+                <h2>Assignment Content</h2>
+                {/* Split the assignment content and wrap sections corresponding to comments with spans */}
+                {comments.map((comment, index) => {
+                  const { start, end } = comment.position;
+                  const beforeComment = assignmentContent.slice(0, start);
+                  const commentText = assignmentContent.slice(start, end);
+                  const afterComment = assignmentContent.slice(end);
+                  return (
+                    <React.Fragment key={index}>
+                      <span>{beforeComment}</span>
+                      <span
+                        className={styles['highlighted-text']}
+                        data-tooltip-id="comment-tooltip"
+                        data-tooltip-content={comment.content}
+                        data-tooltip-place="top"
+                      >
+                        {commentText}
+                      </span>
+                      <span>{afterComment}</span>
+                    </React.Fragment>
+                  );
+                })}
+                  <Tooltip
+                    id="comment-tooltip"
+                  />
+              </div>
+            </div>
+            <div className={styles['right-column']}>
+              <div className={styles['right-column-content']}>
+                <h2>Assignment Comments</h2>
+                <ul>
+                  {general.map((general, index) => (
+                    <li key={index}>{general.comment}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </div>
-          <div className={`${styles['assignment-details-widget']}`}>
-            {StudentGradeSummary('', '')}
-          </div>
+          <Footer />
         </div>
-        <div className={styles['center-column']}>
-          <div className={styles['assignment-header']}>
-            <h1>Assignment Name</h1>
-          </div>
-          <div className={styles['ipsum-content']}>
-            <h2>Assignment Content</h2>
-            {/* Split the assignment content and wrap sections corresponding to comments with spans */}
-            {comments.map((comment, index) => {
-              const { start, end } = comment.position;
-              const beforeComment = assignmentContent.slice(0, start);
-              const commentText = assignmentContent.slice(start, end);
-              const afterComment = assignmentContent.slice(end);
-              return (
-                <React.Fragment key={index}>
-                  <span>{beforeComment}</span>
-                  <span
-                    className={styles['highlighted-text']}
-                    data-tooltip-id="comment-tooltip"
-                    data-tooltip-content={comment.content}
-                    data-tooltip-place="top"
-                  >
-                    {commentText}
-                  </span>
-                  <span>{afterComment}</span>
-                </React.Fragment>
-              );
-            })}
-              <Tooltip
-                id="comment-tooltip"
-              />
-          </div>
-        </div>
-        <div className={styles['right-column']}>
-          <div className={styles['right-column-content']}>
-            <h2>Assignment Comments</h2>
-            <ul>
-              {general.map((general, index) => (
-                <li key={index}>{general.comment}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
-      <Footer />
-    </div>
+      </Body>
+    </Page>
   );
 };
 

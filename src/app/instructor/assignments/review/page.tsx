@@ -1,90 +1,12 @@
-'use client'
+'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './page.module.css';
 import * as yaml from 'js-yaml'; // Import the js-yaml library
+import Page, { Header, Body } from "../../../../components/Page";
+import InstructorGradeSummary from './InstructorGradeSummary';
 
-const InstructorGradeSummary = () => {
-  // Assuming rubric data and student marks data are available
-  const rubricData = [
-    { category: "Grammar", max_marks: 10 },
-    { category: "Content", max_marks: 20 }
-    // Add more rubric categories as needed
-  ];
-
-  const studentMarksData = useRef([
-    { category: "Grammar", student_marks: 8 },
-    { category: "Content", student_marks: 15 }
-    // Add student marks for each category
-  ]);
-
-  function refreshMarks() {
-    setTotalStudentMarks(Array.from(document.querySelectorAll(`input[data-rubric-grading-input]`))
-      .map(element => parseInt((element as HTMLInputElement).value))
-      .reduce((a, b) => a + b, 0));
-  }
-
-  // Calculate total marks and total student marks
-  const totalMarks = rubricData.reduce((total, { max_marks }) => total + max_marks, 0);
-  const [totalStudentMarks, setTotalStudentMarks] = useState(studentMarksData.current.reduce((total, { student_marks }) => total + student_marks, 0));
-  const percentageMark = ((totalStudentMarks / totalMarks) * 100).toFixed(1);
-
-  // Function to show rubric
-  const handleShowRubric = () => {
-    // Logic to show rubric
-    console.log("Show rubric");
-  };
-
-  const handleCompleteMarking = () => {
-    // Logic to complete marking
-    console.log("Complete marking");
-    location.href = "/instructor/assignments";
-  }
-
-  return (
-    <div className={styles['left-column-content']}>
-      <button className={styles['grade-summary-button']} onClick={handleShowRubric}>
-        Show Rubric
-      </button>
-      <table className={styles['grade-summary-table']}>
-        <thead>
-          <tr>
-            <th>Category</th>
-            <th>Grade</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rubricData.map(({ category, max_marks }, index) => {
-            const studentMarks = studentMarksData.current[index]!.student_marks || 0;
-            return (
-              <tr key={category}>
-                <td>{category}</td>
-                <td>
-                  <input type="number" max={max_marks} min={0} value={studentMarks} onChange={e => {
-                    studentMarksData.current[index].student_marks = parseInt(e.target.value);
-                    refreshMarks();
-                  }} data-rubric-grading-input />
-                  /{max_marks}
-                </td>
-              </tr>
-            );
-          })}
-          <tr className={styles['grade-summary-total']}>
-            <td>Total</td>
-            <td>{`${totalStudentMarks}/${totalMarks} = ${percentageMark}%`}</td>
-          </tr>
-        </tbody>
-      </table>
-      <button onClick={handleCompleteMarking}>
-        Complete Marking
-      </button>
-    </div>
-  );
-};
-
-const InstructorReviewPage = () => {
-  // Example YAML content (replace with actual content loaded from file)
-  const yamlContent = `
+const yamlContent = `
     rubric:
       - category: Grammar
         max_marks: 10
@@ -114,6 +36,9 @@ const InstructorReviewPage = () => {
       - comment: YAAAAAA
   `;
 
+
+
+const InstructorReviewPage = () => {
   // Parse YAML content
   const [data, setData] = useState<{
     rubric: { category: string, max_marks: number }[],
@@ -135,74 +60,90 @@ const InstructorReviewPage = () => {
         key={index}
         data-comment-id={id}
         className={styles['comment']}>
-        <b>Comment</b> <br />
-        <hr /><br />
-        <span contentEditable={true} onInput={() => {
-          // Yes. this is a copy of the onResize function below.
-          // I have this copy.
-          let cannotBeLessThan = 0; // overlap check
-          for (let i = 0; i < commentDivs.length; i++) {
-            const commentReactDiv = commentDivs[i] as React.ReactElement;
-            const id = commentReactDiv.props["data-comment-id"];
-
-            // Position comment to as close to its text as possible
-            const highlightedText = document.querySelector(`.${styles['highlighted-text']}[data-comment-id="${id}"]`) as HTMLSpanElement;
-            const commentDiv = document.querySelector(`.${styles['comment']}[data-comment-id="${id}"]`) as HTMLDivElement;
-            commentDiv.style.position = 'absolute';
-
-            let positionedTop = highlightedText.offsetTop - 60; // minus 60 bc the header is 60px tall
-            if (i > 0) {
-              // Check if we are overlapping with predecessor
-              if (cannotBeLessThan > positionedTop) {
-                positionedTop = cannotBeLessThan;
-              }
-            }
-            commentDiv.style.top = `${positionedTop}px`;
-            cannotBeLessThan = positionedTop + commentDiv.offsetHeight + 10;  // add 10 for a tiny gap.
-          }
-        }}>{content}</span>
+        <div style={{ position: "relative" }}>
+          <div className={styles['comment-x-line']} data-comment-id={id}></div>,
+          <b>Comment</b> <br />
+          <hr /><br />
+          <span contentEditable={true} onInput={() => onResize()}>{content}</span>
+        </div>
       </div>
     );
   });
+
+  const commentLineDivs = comments.map(comment => ([
+    <div key={0} className={styles['comment-x-line']} data-comment-id={comment.id}></div>,
+    <div key={1} className={styles['comment-y-line']} data-comment-id={comment.id}></div>
+  ])).reduce((a, b) => a.concat(b));
+
+  const onResize = useCallback(function() {
+    // Yes. this is a copy of the onResize function below.
+    // I have this copy.
+    let cannotBeLessThan = 0; // overlap check
+    for (let i = 0; i < commentDivs.length; i++) {
+      const commentReactDiv = commentDivs[i] as React.ReactElement;
+      const id = commentReactDiv.props["data-comment-id"];
+
+      // Position comment to as close to its text as possible
+      const highlightedText = document.querySelector(`.${styles['highlighted-text']}[data-comment-id="${id}"]`) as HTMLSpanElement;
+      const commentDiv = document.querySelector(`.${styles['comment']}[data-comment-id="${id}"]`) as HTMLDivElement;
+      commentDiv.style.position = 'absolute';
+
+      let positionedTop = highlightedText.offsetTop;
+      if (i > 0) {
+        // Check if we are overlapping with predecessor
+        if (cannotBeLessThan > positionedTop) {
+          positionedTop = cannotBeLessThan;
+        }
+      }
+      commentDiv.style.top = `${positionedTop}px`;
+      cannotBeLessThan = positionedTop + commentDiv.offsetHeight + 10;  // add 10 for a tiny gap.
+    
+      const commentXLineDiv = commentDiv.querySelector(`.${styles['comment-x-line']}`) as HTMLDivElement;
+      commentXLineDiv.style.top = "-11px";
+      commentXLineDiv.style.left = "-30px";
+    }
+
+    for (const commentLineDiv of commentLineDivs) {
+      const id = commentLineDiv.props["data-comment-id"];
+      const highlightedText = document.querySelector(`.${styles['highlighted-text']}[data-comment-id="${id}"]`) as HTMLSpanElement;
+      const commentDiv = document.querySelector(`.${styles['comment']}[data-comment-id="${id}"]`) as HTMLDivElement;
+
+      const commentXLineDiv = document.querySelector(`div[data-component="comments"] .${styles['comment-x-line']}[data-comment-id="${id}"]`)! as HTMLDivElement;
+      commentXLineDiv.style.top = `${highlightedText.offsetTop}px`;
+      commentXLineDiv.style.left = `${highlightedText.offsetLeft}px`;
+      commentXLineDiv.style.width = `${(highlightedText.parentElement!.offsetWidth + 40) - highlightedText.offsetLeft}px`;
+
+      const commentYLineDiv = document.querySelector(`div[data-component="comments"] .${styles['comment-y-line']}[data-comment-id="${id}"]`)! as HTMLDivElement;
+      if (highlightedText.offsetTop > commentDiv.offsetTop) {
+        commentYLineDiv.style.top = `${commentDiv.offsetTop}px`;
+        commentYLineDiv.style.height = `${highlightedText.offsetTop - commentDiv.offsetTop}px`;
+      } else {
+        commentYLineDiv.style.top = `${highlightedText.offsetTop}px`;
+        commentYLineDiv.style.height = `${commentDiv.offsetTop - highlightedText.offsetTop}px`;
+      }
+      commentYLineDiv.style.left = "calc(60vw - 20px)";
+      console.log(commentYLineDiv, highlightedText.offsetTop - commentDiv.offsetTop);
+    }
+  }, [ commentDivs, commentLineDivs ]);
 
   function onCommentClick(event: React.MouseEvent<HTMLSpanElement>) {
     const target = event.target as HTMLElement;
     const id = target.getAttribute("data-comment-id");
 
     document.querySelectorAll(`.${styles['comment']}`).forEach(commentDiv => commentDiv.classList.remove(styles.active));
-    const commentDiv = document.querySelector(`.${styles['comment']}[data-comment-id="${id}"]`);
-    commentDiv!.classList.add(styles.active);
+    document.querySelectorAll(`.${styles['comment-x-line']}`).forEach(lineDiv => lineDiv.classList.remove(styles.active));
+    document.querySelectorAll(`.${styles['comment-y-line']}`).forEach(lineDiv => lineDiv.classList.remove(styles.active));
+    const commentDivs = document.querySelectorAll(`.${styles['comment']}[data-comment-id="${id}"], .${styles['comment-x-line']}[data-comment-id="${id}"], .${styles['comment-y-line']}[data-comment-id="${id}"]`);
+    commentDivs.forEach(div => div.classList.add(styles.active));
+    
   }
 
   useEffect(() => {
-    function onResize() {
-      let cannotBeLessThan = 0; // overlap check
-      for (let i = 0; i < commentDivs.length; i++) {
-        const commentReactDiv = commentDivs[i] as React.ReactElement;
-        const id = commentReactDiv.props["data-comment-id"];
-
-        // Position comment to as close to its text as possible
-        const highlightedText = document.querySelector(`.${styles['highlighted-text']}[data-comment-id="${id}"]`) as HTMLSpanElement;
-        const commentDiv = document.querySelector(`.${styles['comment']}[data-comment-id="${id}"]`) as HTMLDivElement;
-        commentDiv.style.position = 'absolute';
-
-        let positionedTop = highlightedText.offsetTop - 60; // minus 60 bc the header is 60px tall
-        if (i > 0) {
-          // Check if we are overlapping with predecessor
-          if (cannotBeLessThan > positionedTop) {
-            positionedTop = cannotBeLessThan;
-          }
-        }
-        commentDiv.style.top = `${positionedTop}px`;
-        cannotBeLessThan = positionedTop + commentDiv.offsetHeight + 10;  // add 10 for a tiny gap.
-      }
-    }
-
     if (resizeTrigger) {
       setResizeTrigger(false);
       onResize();
     }
-  }, [resizeTrigger, commentDivs]);
+  }, [resizeTrigger, commentDivs, commentLineDivs, onResize]);
 
   useEffect(() => {
     // First, just place the comments wherever we can.
@@ -213,8 +154,8 @@ const InstructorReviewPage = () => {
     }
     trigger();
 
-    document.addEventListener("resize", trigger);
-    return () => document.removeEventListener("resize", trigger);
+    window.addEventListener("resize", trigger);
+    return () => window.removeEventListener("resize", trigger);
   }, [resizeTrigger]);
 
   useEffect(() => {
@@ -265,56 +206,88 @@ const InstructorReviewPage = () => {
     return () => document.removeEventListener("mouseup", onMouseUp);
   }, [commentDivs, data]);
 
+  const handleCompleteMarking = () => {
+    window.location.href = "/instructor/assignments";
+  };
+
   // Render comments with highlighted text
   return (
-    <div className={styles['main-layout']}>
-      <div className={styles['review-page']}>
-        <div className={styles['left-column']}>
-          <h2>English</h2>
-          <div className={`${styles['assignment-details']}`}> {/* Apply left-column-content style here */}
-            <h3>Rubric Details</h3>
-          </div>
-          <div className={`${styles['assignment-details-widget']}`}>
-            {InstructorGradeSummary()}
-          </div>
-        </div>
-        <div className={styles['assignment-and-comments']}>
-          <div className={styles['center-column']}>
-            <div className={styles['assignment-header']}>
-              <h1>Assignment Name</h1>
-            </div>
-            <div className={styles['ipsum-content']}>
-              <h2>Assignment Content</h2>
-              {/* Split the assignment content and wrap sections corresponding to comments with spans */}
-              {comments.map((comment: { id: number, content: string, position: { start: number, end: number } }, index: number) => {
-                const { start, end } = comment.position;
-                const beforeComment = index === 0 ? assignmentContent.slice(0, start) : "";
-                const commentText = assignmentContent.slice(start, end + 1);
+    <Page>
+      <Header>
+        <h1>Review</h1>
+        {/* <div>
+          <Form>
+            <Form.Check type="switch" label="AI Review" />
+          </Form>
+        </div> */}
+      </Header>
+      <div>
+        <Body>
+          <div className={styles['main-layout']}>
+            <div className={styles['review-page']}>
+              <div className={styles['left-column']}>
+                <h2>English</h2>
+                <div className={`${styles['assignment-details']}`}> {/* Apply left-column-content style here */}
+                  <h3>Rubric Details</h3>
+                </div>
+                <div className={`${styles['assignment-details-widget']}`}>
+                  {InstructorGradeSummary()}
+                </div>
+                <br />
+                <div className={styles['general-comments-section']}>
+                  <h3>General Comments</h3>
+                  <textarea placeholder="Type overall thoughts on the assignment for the student to review" />
+                  <br /><br />
+                  <button onClick={handleCompleteMarking}>
+                    Complete Marking
+                  </button>
+                </div>
+              </div>
+              <div className={styles['assignment-and-comments']} style={{ position: "relative" }}>
+                <div data-component="comments">
+                  {commentLineDivs}
+                </div>
+                <div className={styles['center-column']}>
+                  <div className={styles['assignment-header']}>
+                    <h1>Assignment Name</h1>
+                  </div>
+                  <div className={styles['ipsum-content']}>
+                    <h2>Assignment Content</h2>
+                    {/* Split the assignment content and wrap sections corresponding to comments with spans */}
+                    {comments.map((comment: { id: number, content: string, position: { start: number, end: number } }, index: number) => {
+                      const { start, end } = comment.position;
+                      const beforeComment = index === 0 ? assignmentContent.slice(0, start) : "";
+                      const commentText = assignmentContent.slice(start, end + 1);
 
-                const afterCommentEndPos = index === comments.length - 1 ? assignmentContent.length : comments[index + 1].position.start;
-                const afterComment = assignmentContent.slice(end + 1, afterCommentEndPos);
-                return (
-                  <React.Fragment key={index}>
-                    <span>{beforeComment}</span>
-                    <span
-                      className={styles['highlighted-text']}
-                      data-comment-id={comment.id}
-                      onClick={onCommentClick}
-                    >
-                      {commentText}
-                    </span>
-                    <span>{afterComment}</span>
-                  </React.Fragment>
-                );
-              })}
+                      const afterCommentEndPos = index === comments.length - 1 ? assignmentContent.length : comments[index + 1].position.start;
+                      const afterComment = assignmentContent.slice(end + 1, afterCommentEndPos);
+                      return (
+                        <React.Fragment key={index}>
+                          <span>{beforeComment}</span>
+                          <span
+                            className={styles['highlighted-text']}
+                            data-comment-id={comment.id}
+                            onClick={onCommentClick}
+                          >
+                            {commentText}
+                          </span>
+                          <span>{afterComment}</span>
+                        </React.Fragment>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className={styles['right-column']}>
+                  <h3>Content Comments</h3>
+                  <strong>Highlight text to make a comment!</strong>
+                  {commentDivs}
+                </div>
+              </div>
             </div>
           </div>
-          <div className={styles['right-column']}>
-            {commentDivs}
-          </div>
-        </div>
+        </Body>
       </div>
-    </div>
+    </Page>
   );
 };
 
