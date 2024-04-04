@@ -19,16 +19,26 @@ const yamlContent = `
           end: 5
         content: "You need to work on your grammar in this paragraph."
         id: 1
+        type: "instructor"
       - position:
           start: 7
           end: 9
         content: "Great job on including relevant content here!"
         id: 2
+        type: "instructor"
       - position:
           start: 11
           end: 15
         content: "Testing!"
         id: 3
+        type: "instructor"
+      - position:
+          start: 4450
+          end: 4600
+        content: "I believe that this is creative because of ..."
+        id: 4
+        type: "ai"
+    
 
     general:
       - comment: Lorem Ipsum dolet sit amur
@@ -42,7 +52,7 @@ const InstructorReviewPage = () => {
   // Parse YAML content
   const [data, setData] = useState<{
     rubric: { category: string, max_marks: number }[],
-    comments: { position: { start: number, end: number }, content: string, id: number }[],
+    comments: { position: { start: number, end: number }, content: string, id: number, type: "instructor"|"ai" }[],
     general: { comment: string }[]
   }>(yaml.load(yamlContent) as any);
   const [resizeTrigger, setResizeTrigger] = useState(false);
@@ -54,7 +64,7 @@ const InstructorReviewPage = () => {
   let assignmentContent = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
   assignmentContent = assignmentContent.repeat(100); // uncomment to extend lorem ipsum to test scrolling
 
-  const commentDivs = comments.sort((a, b) => a.position.end - b.position.end).map(({ content, id }: { content: string, id: number }, index: number) => {
+  const commentDivs = comments.sort((a, b) => a.position.end - b.position.end).map(({ content, id, type }, index: number) => {
     return (
       <div
         key={index}
@@ -62,7 +72,7 @@ const InstructorReviewPage = () => {
         className={styles['comment']}>
         <div style={{ position: "relative" }}>
           <div className={styles['comment-x-line']} data-comment-id={id}></div>,
-          <b>Comment</b> <br />
+          <b>{type === "ai" ? "AI Comment" : "Comment"}</b> <br />
           <hr /><br />
           <span contentEditable={true} onInput={() => onResize()}>{content}</span>
         </div>
@@ -190,7 +200,8 @@ const InstructorReviewPage = () => {
         data.comments.push({
           position: { start, end },
           content: "...",
-          id: data.comments.length + 1
+          id: data.comments.length + 1,
+          type: "instructor"
         });
         setData({
           rubric: data.rubric,
@@ -254,7 +265,7 @@ const InstructorReviewPage = () => {
                   <div className={styles['ipsum-content']}>
                     <h2>Assignment Content</h2>
                     {/* Split the assignment content and wrap sections corresponding to comments with spans */}
-                    {comments.map((comment: { id: number, content: string, position: { start: number, end: number } }, index: number) => {
+                    {comments.map((comment, index: number) => {
                       const { start, end } = comment.position;
                       const beforeComment = index === 0 ? assignmentContent.slice(0, start) : "";
                       const commentText = assignmentContent.slice(start, end + 1);
@@ -265,7 +276,7 @@ const InstructorReviewPage = () => {
                         <React.Fragment key={index}>
                           <span>{beforeComment}</span>
                           <span
-                            className={styles['highlighted-text']}
+                            className={comment.type === "ai" ? `${styles['highlighted-text']} ${styles['ai']}` : styles['highlighted-text']}
                             data-comment-id={comment.id}
                             onClick={onCommentClick}
                           >

@@ -132,6 +132,10 @@
   cursor: pointer;
 }
 
+.highlighted-text.ai {
+  background-color: rgb(201, 20, 201);
+}
+
 .comment {
   border: 1px solid var(--text-colour);
   padding-left: 10px;
